@@ -44,7 +44,7 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
   //Write your code here
   const isbn = req.params.isbn;
   const review = req.body.review;
-  const username = req.user.username;
+  const username = req.session.authorization.username;
 
   if(!books[isbn]) {
     res.send("Book not found");
@@ -56,13 +56,13 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
 
 regd_users.delete("/auth/review/:isbn", (req,res) => {
     const isbn = req.params.isbn;
-    const username = req.user.username;
+    const username = req.session.authorization.username;
 
     if(!books[isbn]) {
         res.send("Book not found");
     } else {
         delete books[isbn].reviews[username];
-        res.send(`${username}'s reviews successfully deleted for ${book}`);
+        res.send(`${username}'s reviews successfully deleted for ${books[isbn].title}`);
     }
 });
 
