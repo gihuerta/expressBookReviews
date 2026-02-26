@@ -33,7 +33,7 @@ regd_users.post("/login", (req,res) => {
         req.session.authorization = {
             accessToken, username
         }
-        return res.status(200).send("User successfully logged in");
+        return res.status(200).send({message:"User successfully logged in"});
     } else {
         return res.status(208).json({ message: "Invalid Login. Check username and password" });
     }
@@ -47,10 +47,10 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
   const username = req.session.authorization.username;
 
   if(!books[isbn]) {
-    res.send("Book not found");
+    res.send({message:"Book not found"});
   } else {
     books[isbn].reviews[username] = review;
-    res.send("Review added/updated successfully");
+    res.send({message:"Review added/updated successfully"});
   }
 });
 
@@ -59,10 +59,10 @@ regd_users.delete("/auth/review/:isbn", (req,res) => {
     const username = req.session.authorization.username;
 
     if(!books[isbn]) {
-        res.send("Book not found");
+        res.send({message:"Book not found"});
     } else {
         delete books[isbn].reviews[username];
-        res.send(`${username}'s reviews successfully deleted for ${books[isbn].title}`);
+        res.send({message:`${username}'s reviews successfully deleted for ${books[isbn].title}`});
     }
 });
 

@@ -33,7 +33,7 @@ public_users.get('/',function (req, res) {
         res.send(JSON.stringify(data,null,4));
     })
     .catch(err => {
-        res.send("Error retrieving books!");
+        res.send({message:"Error retrieving books!"});
     })
 });
 
@@ -47,7 +47,7 @@ public_users.get('/isbn/:isbn',function (req, res) {
         if (book) {
             resolve(book);
         } else {
-            reject("Unable to find book!");
+            reject({message: "Unable to find book!"});
         }
     })
     .then(book => {
@@ -71,7 +71,7 @@ public_users.get('/author/:author',function (req, res) {
         if (filtered_books.length > 0) {
             resolve(filtered_books);
         } else {
-            reject("No books found for this author!");
+            reject({message:"No books found for this author!"});
         }
     })
     .then(data => {
@@ -98,9 +98,14 @@ public_users.get('/review/:isbn',function (req, res) {
     new Promise((resolve,reject) => {
         const book = books[isbn];
     if (book) {
-        resolve(book.reviews);
+        if (Object.keys(book.reviews).length > 0) {
+            resolve(book.reviews);resolve(book.reviews);
+        } else {
+            reject({message:"This book has no reviews!"});
+        }
+        
     } else {
-        reject("Unable to find book!");
+        reject({message:"Unable to find book!"});
     }
     })
     .then(reviews => {
